@@ -1,0 +1,486 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    tools:ignore="UseCompoundDrawables"
+    android:background="@drawable/border">
+    <ImageView
+        android:id="@+id/cat_image"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:scaleType="fitXY"
+        android:layout_gravity="center"
+        android:contentDescription="@string/app_name"
+        android:layout_margin="3dp"/>
+
+    <TextView
+        android:id="@+id/cat_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:textColor="#5C0CDC"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"/>
+    <TextView
+        android:id="@+id/cat_origin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textStyle="italic"
+        android:textSize="18sp"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+        tools:ignore="SmallSp" />
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textStyle="italic"
+        android:textSize="15sp"
+        android:textColor="#77bbd4"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+        tools:ignore="SmallSp" />
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="12sp"
+        android:textColor="#fdd489"
+        android:text="@string/temperament"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+        tools:ignore="SmallSp"
+        android:paddingLeft="5dp"
+        />
+    <TextView
+        android:id="@+id/temperament"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="italic"
+        android:textSize="12sp"
+        android:gravity="center"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+        tools:ignore="SmallSp"
+        android:paddingStart="2dp" />
+</LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="12sp"
+            android:text="@string/alternate_name"
+            android:textColor="#fdd489"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+            tools:ignore="SmallSp"
+            android:paddingLeft="5dp"/>
+        <TextView
+            android:id="@+id/alt_names"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="italic"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+            tools:ignore="SmallSp"
+            android:paddingStart="2dp"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="12sp"
+            android:text="@string/life_span"
+            android:textColor="#fdd489"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+            tools:ignore="SmallSp"
+            android:paddingLeft="5dp"/>
+        <TextView
+            android:id="@+id/life_span"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="italic"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+            tools:ignore="SmallSp"
+            android:paddingStart="2dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="italic"
+            android:textSize="12sp"
+            android:text="@string/adaptability"
+            android:gravity="center"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+            tools:ignore="RtlSymmetry,SmallSp"
+            android:paddingStart="2dp"/>
+
+        <androidx.appcompat.widget.AppCompatRatingBar
+            android:id="@+id/adaptability"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:stepSize="0.25"
+            android:numStars="5"
+            style="?android:attr/ratingBarStyleSmall" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="italic"
+            android:textSize="12sp"
+            android:text="@string/affection_level"
+            android:gravity="center"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+            tools:ignore="RtlSymmetry,SmallSp"
+            android:paddingStart="2dp"/>
+
+        <androidx.appcompat.widget.AppCompatRatingBar
+            android:id="@+id/affection_level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:stepSize="0.25"
+            android:numStars="5"
+            style="?android:attr/ratingBarStyleSmall" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="italic"
+            android:textSize="12sp"
+            android:text="@string/child_friendly"
+            android:gravity="center"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+            tools:ignore="RtlSymmetry,SmallSp"
+            android:paddingStart="2dp"/>
+
+        <androidx.appcompat.widget.AppCompatRatingBar
+            android:id="@+id/child_friendly"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:stepSize="0.25"
+            android:numStars="5"
+            style="?android:attr/ratingBarStyleSmall" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="italic"
+            android:textSize="12sp"
+            android:text="@string/dog_friendly"
+            android:gravity="center"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+            tools:ignore="RtlSymmetry,SmallSp"
+            android:paddingStart="2dp"/>
+
+        <androidx.appcompat.widget.AppCompatRatingBar
+            android:id="@+id/dog_friendly"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:stepSize="0.25"
+            android:numStars="5"
+            style="?android:attr/ratingBarStyleSmall" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="italic"
+            android:textSize="12sp"
+            android:text="@string/energy_level"
+            android:gravity="center"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+            tools:ignore="RtlSymmetry,SmallSp"
+            android:paddingStart="2dp"/>
+
+        <androidx.appcompat.widget.AppCompatRatingBar
+            android:id="@+id/energy_level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:stepSize="0.25"
+            android:numStars="5"
+            style="?android:attr/ratingBarStyleSmall" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="italic"
+            android:textSize="12sp"
+            android:text="@string/grooming"
+            android:gravity="center"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+            tools:ignore="RtlSymmetry,SmallSp"
+            android:paddingStart="2dp"/>
+
+        <androidx.appcompat.widget.AppCompatRatingBar
+            android:id="@+id/grooming"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:stepSize="0.25"
+            android:numStars="5"
+            style="?android:attr/ratingBarStyleSmall" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="italic"
+            android:textSize="12sp"
+            android:text="@string/health_issues"
+            android:gravity="center"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+            tools:ignore="RtlSymmetry,SmallSp"
+            android:paddingStart="2dp"/>
+
+        <androidx.appcompat.widget.AppCompatRatingBar
+            android:id="@+id/health_issues"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:stepSize="0.25"
+            android:numStars="5"
+            style="?android:attr/ratingBarStyleSmall" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="italic"
+            android:textSize="12sp"
+            android:text="@string/intelligence"
+            android:gravity="center"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+            tools:ignore="RtlSymmetry,SmallSp"
+            android:paddingStart="2dp"/>
+
+        <androidx.appcompat.widget.AppCompatRatingBar
+            android:id="@+id/intelligence"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:stepSize="0.25"
+            android:numStars="5"
+            style="?android:attr/ratingBarStyleSmall" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="italic"
+            android:textSize="12sp"
+            android:text="@string/shedding_level"
+            android:gravity="center"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+            tools:ignore="RtlSymmetry,SmallSp"
+            android:paddingStart="2dp"/>
+
+        <androidx.appcompat.widget.AppCompatRatingBar
+            android:id="@+id/shedding_level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:stepSize="0.25"
+            android:numStars="5"
+            style="?android:attr/ratingBarStyleSmall" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="italic"
+            android:textSize="12sp"
+            android:text="@string/social_needs"
+            android:gravity="center"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+            tools:ignore="RtlSymmetry,SmallSp"
+            android:paddingStart="2dp"/>
+
+        <androidx.appcompat.widget.AppCompatRatingBar
+            android:id="@+id/social_needs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:stepSize="0.25"
+            android:numStars="5"
+            style="?android:attr/ratingBarStyleSmall" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="italic"
+            android:textSize="12sp"
+            android:text="@string/stranger_friendly"
+            android:gravity="center"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+            tools:ignore="RtlSymmetry,SmallSp"
+            android:paddingStart="2dp"/>
+
+        <androidx.appcompat.widget.AppCompatRatingBar
+            android:id="@+id/stranger_friendly"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:stepSize="0.25"
+            android:numStars="5"
+            style="?android:attr/ratingBarStyleSmall" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="italic"
+            android:textSize="12sp"
+            android:text="@string/vocalisation"
+            android:gravity="center"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+            tools:ignore="RtlSymmetry,SmallSp"
+            android:paddingStart="2dp"/>
+
+        <androidx.appcompat.widget.AppCompatRatingBar
+            android:id="@+id/vocalisation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:stepSize="0.25"
+            android:numStars="5"
+            style="?android:attr/ratingBarStyleSmall" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="italic"
+            android:textSize="12sp"
+            android:text="@string/experimental"
+            android:gravity="center"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+            tools:ignore="RtlSymmetry,SmallSp"
+            android:paddingStart="2dp"/>
+
+        <androidx.appcompat.widget.AppCompatRatingBar
+            android:id="@+id/experimental"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:stepSize="0.25"
+            android:numStars="5"
+            style="?android:attr/ratingBarStyleSmall" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="italic"
+            android:textSize="10sp"
+            android:text="@string/wikipedia_link"
+            android:gravity="center"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+            tools:ignore="RtlSymmetry,SmallSp"
+            android:paddingStart="2dp"/>
+        <TextView
+            android:id="@+id/wikipedia_url"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="italic"
+            android:textSize="10sp"
+            android:gravity="center"
+            android:textColor="@android:color/holo_blue_dark"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+            tools:ignore="RtlSymmetry,SmallSp"
+            android:paddingStart="2dp"/>
+
+
+
+    </LinearLayout>
+</LinearLayout>

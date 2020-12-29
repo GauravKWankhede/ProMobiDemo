@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">ProMobiDemo</string>
+    <string name="linear_view_horizontal">Linear View Horizontal</string>
+    <string name="linear_view_vertical">Linear View Vertical</string>
+    <string name="grid_view">grid View</string>
+    <string name="viewpager">ViewPager</string>
+    <string name="temperament">temperament : </string>
+    <string name="alternate_name">Alternate Name :</string>
+    <string name="life_span">Life Span :</string>
+    <string name="adaptability">Adaptability : </string>
+    <string name="affection_level">Affection Level : </string>
+    <string name="child_friendly">Child Friendly :</string>
+    <string name="dog_friendly">Dog Friendly :</string>
+    <string name="energy_level">Energy Level :</string>
+    <string name="grooming">Grooming :</string>
+    <string name="health_issues">Health Issues :</string>
+    <string name="intelligence">Intelligence :</string>
+    <string name="shedding_level">Shedding Level :</string>
+    <string name="social_needs">Social Needs :</string>
+    <string name="stranger_friendly">Stranger Friendly :</string>
+    <string name="vocalisation">Vocalisation :</string>
+    <string name="experimental">Experimental :</string>
+    <string name="wikipedia_link">Wikipedia Link :</string>
+    <string name="view_pager">View Pager</string>
+</resources>
