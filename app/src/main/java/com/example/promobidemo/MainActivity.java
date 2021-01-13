@@ -2,48 +2,49 @@ package com.example.promobidemo;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProvider.Factory;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.promobidemo.Adapters.CatsAdapter;
+import com.example.promobidemo.Adapters.ViewPagerAdapter;
+import com.example.promobidemo.RoomDBFiles.AppDatabase;
+import com.example.promobidemo.RoomDBFiles.Converter;
+import com.example.promobidemo.RoomDBFiles.DatabaseClient;
+import com.example.promobidemo.RoomDBFiles.TaskDao;
+
 import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.GET;
 
 public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
-    Realm realm;
-    RealmConfiguration config;
     ViewPager viewPager;
     ViewPagerAdapter viewPagerAdapter;
-    List<Cat> catList;
 
+    @Inject
+    Retrofit retrofit;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,11 +55,129 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         LinearLayoutManager manager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(manager);
-        Realm.init(MainActivity.this);
+
 
         loadCats();
 
     }
+
+    private void loadCats() {
+
+        final ProgressDialog progressDialog;
+        progressDialog = new ProgressDialog(MainActivity.this);
+        progressDialog.setMessage("Its loading...");
+        progressDialog.setTitle("ProgressDialog");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        if (isNetworkConnected()){
+            ((CustomApplication)getApplication()).getCatsComponent().inject(this);
+            Api mService = retrofit.create(Api.class);
+            Call<List<Cat>> mCats = mService.getCats();
+
+            mCats.enqueue(new Callback<List<Cat>>() {
+                @Override
+                public void onResponse(Call<List<Cat>> call, Response<List<Cat>> response) {
+                    progressDialog.dismiss();
+                    viewPagerAdapter = new ViewPagerAdapter(MainActivity.this, response.body());
+                    viewPager.setAdapter(viewPagerAdapter);
+                    recyclerView.setAdapter(new CatsAdapter(MainActivity.this, response.body()));
+
+                    addData(response.body());
+                }
+
+
+                @Override
+                public void onFailure(Call<List<Cat>> call, Throwable t) {
+                    Log.e("ERROR", "onFailure: "+ t.getMessage() );
+
+                }
+
+            });
+
+
+        }
+        else if (checkRoomDababaseIsPresent(MainActivity.this,"AllCatsInfo")){
+            //set data from room database to viewpager and recyclerview
+            progressDialog.dismiss();
+            class GetAllDataFromRoom extends AsyncTask<Void,Void,List<Cat>>{
+
+                @Override
+                protected List<Cat> doInBackground(Void... voids) {
+                    List<Cat> catList =DatabaseClient.getInstance(getApplicationContext())
+                            .getAppDatabase()
+                            .taskDao()
+                            .getAll();
+                    return catList;
+
+                }
+
+                @Override
+                protected void onPostExecute(List<Cat> catList) {
+                    super.onPostExecute(catList);
+                    viewPagerAdapter = new ViewPagerAdapter(MainActivity.this,catList);
+                    viewPager.setAdapter(viewPagerAdapter);
+                    recyclerView.setAdapter(new CatsAdapter(MainActivity.this,catList));
+                }
+            }
+
+            GetAllDataFromRoom getAllDataFromRoom = new GetAllDataFromRoom();
+            getAllDataFromRoom.execute();
+        }
+        else
+        {
+            progressDialog.setTitle("Error");
+            progressDialog.setMessage("Check your Internet Connection....");
+            progressDialog.show();
+        }
+    }
+
+    private void addData(List<Cat> body) {
+        class AddDataToRoomDatabase extends AsyncTask<Void, Void, Void> {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                Cat cat = new Cat();
+                cat.setName(cat.getName());
+                cat.setOrigin(cat.getOrigin());
+                cat.setDescription(cat.getDescription());
+                cat.setTemperament(cat.getTemperament());
+                cat.setAlt_names(cat.getAlt_names());
+                cat.setLife_span(cat.getLife_span());
+                cat.setAdaptability(cat.getAdaptability());
+                cat.setAffection_level(cat.getAffection_level());
+                cat.setChild_friendly(cat.getChild_friendly());
+                cat.setDog_friendly(cat.getDog_friendly());
+                cat.setEnergy_level(cat.getEnergy_level());
+                cat.setGrooming(cat.getGrooming());
+                cat.setHealth_issues(cat.getHealth_issues());
+                cat.setIntelligence(cat.getIntelligence());
+                cat.setShedding_level(cat.getShedding_level());
+                cat.setSocial_needs(cat.getSocial_needs());
+                cat.setStranger_friendly(cat.getStranger_friendly());
+                cat.setVocalisation(cat.getVocalisation());
+                cat.setExperimental(cat.getExperimental());
+                cat.setImage(cat.getImage());
+
+                DatabaseClient.getInstance(getApplicationContext()).getAppDatabase()
+                        .taskDao()
+                        .insert(cat);
+
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+
+                Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_SHORT).show();
+            }
+
+        }
+        AddDataToRoomDatabase addDataToRoomDatabase = new AddDataToRoomDatabase();
+        addDataToRoomDatabase.execute();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main,menu);
@@ -72,7 +191,6 @@ public class MainActivity extends AppCompatActivity {
             case R.id.view_pager:
                 recyclerView.setVisibility(View.GONE);
                 viewPager.setVisibility(View.VISIBLE);
-              //  viewPagerAdapter = new ViewPagerAdapter(MainActivity.this,catList);
                 viewPager.setAdapter(viewPagerAdapter);
 
                 break;
@@ -83,7 +201,6 @@ public class MainActivity extends AppCompatActivity {
                 LinearLayoutManager layoutManagerVertical = new LinearLayoutManager(this);
                 layoutManagerVertical.setOrientation(LinearLayoutManager.VERTICAL);
                 recyclerView.setHasFixedSize(true);
-//                recyclerView.setAdapter(new CatsAdapter(MainActivity.this, catList));
                 recyclerView.setLayoutManager(layoutManagerVertical);
                 break;
 
@@ -92,103 +209,23 @@ public class MainActivity extends AppCompatActivity {
                 recyclerView.setVisibility(View.VISIBLE);
                 GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
                 recyclerView.setHasFixedSize(true);
-              //  recyclerView.setAdapter(new CatsAdapter(MainActivity.this, catList));
                 recyclerView.setLayoutManager(gridLayoutManager);
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
-    private void loadCats() {
 
-        final ProgressDialog progressDialog;
-        progressDialog = new ProgressDialog(MainActivity.this);
-        progressDialog.setMessage("Its loading...");
-        progressDialog.setTitle("ProgressDialog");
-        progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.show();
-
-         if (isNetworkConnected()){
-               Call<List<Cat>> call = RetrofitClient.getInstance().getMyApi().getCats();
-            call.enqueue(new Callback<List<Cat>>() {
-                @Override
-                public void onResponse(Call<List<Cat>> call, Response<List<Cat>> response) {
-                    if (response.isSuccessful()) {
-                        progressDialog.dismiss();
-                        catList = response.body();
-
-                        viewPagerAdapter = new ViewPagerAdapter(MainActivity.this,catList);
-                        viewPager.setAdapter(viewPagerAdapter);
-
-                        recyclerView.setAdapter(new CatsAdapter(MainActivity.this, catList));
-
-                            config = new RealmConfiguration.Builder()
-                                    .build();
-                            Realm.setDefaultConfiguration(config);
-                            realm = Realm.getInstance(config);
-                            realm.beginTransaction();
-                        if (realm.where(Cat.class).findAll().size() == 67){
-                            realm.insert(catList);
-                            realm.commitTransaction();
-                        }
-
-                    }
-                }
-                @Override
-                public void onFailure(Call<List<Cat>> call, Throwable t) {
-                    Toast.makeText(MainActivity.this, ""+t.getMessage(), Toast.LENGTH_SHORT).show();
-                    Log.e("Error msg",""+t.getMessage());
-                }
-            });
-        }
-         else if(isRealmDatabaseFileIsPresent())
-         {
-            //code to load data to recyclerview from realm
-             progressDialog.dismiss();
-            Log.e("Database: ","Present");
-            Realm realm = Realm.getDefaultInstance();
-            realm.beginTransaction();
-            List<Cat>  cats = realm.where(Cat.class).findAll();
-             Log.e("Cats: ",""+cats);
-             Log.e("Cats Size: ",""+cats.size());
-             if (cats.isEmpty()){
-                 progressDialog.setMessage("You are not Connected to Internet. Please turn it ON...");
-                 progressDialog.setTitle("ERROR");
-                 progressDialog.setCanceledOnTouchOutside(false);
-                 progressDialog.show();
-             }
-             else
-             realm.commitTransaction();
-             viewPager.setAdapter(new ViewPagerAdapter(MainActivity.this,cats));
-          //   recyclerView.setVisibility(View.VISIBLE);
-             recyclerView.setAdapter(new CatsAdapter(MainActivity.this,cats));
-           // viewPagerAdapter = new ViewPagerAdapter(MainActivity.this,cats);
-        }
-    }
 
     private boolean isNetworkConnected(){
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
     }
 
-    private boolean isRealmDatabaseFileIsPresent(){
-        String dafaultFile = Realm.getInstance( new RealmConfiguration.Builder().build()).getConfiguration().getRealmFileName();
-        Log.e("default file name", dafaultFile);
-        if ("default.realm".equals(dafaultFile)){
-            return true;
-        }else {
-            return false;
-        }
-       /* RealmConfiguration config = Realm.getDefaultConfiguration();
-        assert config != null;
-        return new File(config.getPath()).exists();*/
-
+    public boolean checkRoomDababaseIsPresent(Context context, String dbName){
+        File dbFile = context.getDatabasePath(dbName);
+        Log.e("FIle Name", dbFile +"");
+        return dbFile.exists();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        realm.close();
-    }
 }
 

@@ -1,13 +1,22 @@
 package com.example.promobidemo;
 
-import io.realm.RealmObject;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
 
-public class Image  extends RealmObject {
+import java.io.Serializable;
+
+public class Image  {
+    @ColumnInfo(name="imageid")
     private String id;
+    @ColumnInfo(name="imagewidth")
     private int width;
+    @ColumnInfo(name="imageheight")
     private int height;
+    @ColumnInfo(name="imageurl")
     private String url;
 
+    @Ignore
     public Image(){}
     public Image(String id, int width, int height, String url) {
         this.id = id;
@@ -20,15 +29,31 @@ public class Image  extends RealmObject {
         return id;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public int getWidth() {
         return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
     }
 
     public int getHeight() {
         return height;
     }
 
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
     public String getUrl() {
         return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

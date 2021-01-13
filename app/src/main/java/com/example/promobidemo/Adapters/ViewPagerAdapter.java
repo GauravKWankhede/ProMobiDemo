@@ -1,4 +1,4 @@
-package com.example.promobidemo;
+package com.example.promobidemo.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,12 +8,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
-
 import com.bumptech.glide.Glide;
-
+import com.example.promobidemo.Cat;
+import com.example.promobidemo.R;
 import java.util.List;
 import java.util.Objects;
 
@@ -30,8 +29,8 @@ public class ViewPagerAdapter extends PagerAdapter {
     }
     @Override
     public int getCount() {
-//        return catList.size();
-        return 67;
+        return catList.size();
+  //      return 67;
     }
 
     @Override
@@ -44,15 +43,12 @@ public class ViewPagerAdapter extends PagerAdapter {
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         View view = inflater.inflate(R.layout.recyclerview_layout,container,false);
         ImageView imageView;
-        TextView catName,catOrigin,description,vcahospitals_url,vetstreet_url,cfa_url,temperament,alt_names,life_span,wikipedia_url;
+        TextView catName,catOrigin,description,temperament,alt_names,life_span,wikipedia_url;
         RatingBar adaptability,affection_level,child_friendly,dog_friendly,energy_level,grooming,health_issues,intelligence,shedding_level,social_needs
                 ,stranger_friendly,vocalisation,experimental;
         imageView = view.findViewById(R.id.cat_image);
         catName = view.findViewById(R.id.cat_name);
         catOrigin = view.findViewById(R.id.cat_origin);
-//            vcahospitals_url = itemView.findViewById(R.id.vcahospitals_url);
-//            vetstreet_url = itemView.findViewById(R.id.vetstreet_url);
-//            cfa_url = itemView.findViewById(R.id.cfa_url);
         description = view.findViewById(R.id.description);
         temperament = view.findViewById(R.id.temperament);
         alt_names = view.findViewById(R.id.alt_names);
@@ -84,9 +80,7 @@ public class ViewPagerAdapter extends PagerAdapter {
                     .load(catList.get(position).getImage().getUrl())
                     .into(imageView);
         }
-//            holder.cfa_url.setText(cat.getCfa_url());
-//            holder.vetstreet_url.setText(cat.getVetstreet_url());
-//            holder.vcahospitals_url.setText(cat.getVcahospitals_url());
+
         description.setText(cat.getDescription());
         temperament.setText(cat.getTemperament());
         if (catList.get(position).getAlt_names()==null){

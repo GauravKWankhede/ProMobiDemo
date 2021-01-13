@@ -6,7 +6,8 @@
     android:layout_height="wrap_content"
     android:padding="5dp"
     tools:ignore="UseCompoundDrawables"
-    android:background="@drawable/border">
+    android:background="@drawable/border"
+    android:layout_centerVertical="true">
     <ImageView
         android:id="@+id/cat_image"
         android:layout_width="match_parent"

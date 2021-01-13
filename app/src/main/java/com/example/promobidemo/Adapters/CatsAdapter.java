@@ -1,7 +1,6 @@
-package com.example.promobidemo;
+package com.example.promobidemo.Adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,11 +10,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
+import com.example.promobidemo.Cat;
+import com.example.promobidemo.R;
+
 import java.util.List;
 
 public class CatsAdapter extends RecyclerView.Adapter<CatsAdapter.CatViewHolder> {
     Context mCtx;
     List<Cat> catList;
+
 
     public CatsAdapter(Context context, List<Cat> catList){
         this.mCtx = context;
@@ -34,6 +37,7 @@ public class CatsAdapter extends RecyclerView.Adapter<CatsAdapter.CatViewHolder>
         Cat cat = catList.get(position);
         holder.catName.setText(cat.getName());
            holder.catOrigin.setText(cat.getOrigin());
+
             if (catList.get(position).getImage()== null || catList.get(position).getImage().getUrl()==null){
 
                 holder.imageView.setImageResource(R.drawable.no_image_available);
@@ -43,9 +47,7 @@ public class CatsAdapter extends RecyclerView.Adapter<CatsAdapter.CatViewHolder>
                         .load(catList.get(position).getImage().getUrl())
                         .into(holder.imageView);
             }
-//            holder.cfa_url.setText(cat.getCfa_url());
-//            holder.vetstreet_url.setText(cat.getVetstreet_url());
-//            holder.vcahospitals_url.setText(cat.getVcahospitals_url());
+
            holder.description.setText(cat.getDescription());
            holder.temperament.setText(cat.getTemperament());
            if (catList.get(position).getAlt_names()==null){
@@ -78,7 +80,7 @@ public class CatsAdapter extends RecyclerView.Adapter<CatsAdapter.CatViewHolder>
 
     public static class CatViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
-        TextView catName,catOrigin,description,vcahospitals_url,vetstreet_url,cfa_url,temperament,alt_names,life_span,wikipedia_url;
+        TextView catName,catOrigin,description,temperament,alt_names,life_span,wikipedia_url;
         RatingBar adaptability,affection_level,child_friendly,dog_friendly,energy_level,grooming,health_issues,intelligence,shedding_level,social_needs
                 ,stranger_friendly,vocalisation,experimental;
         public CatViewHolder(@NonNull View itemView) {
@@ -86,9 +88,6 @@ public class CatsAdapter extends RecyclerView.Adapter<CatsAdapter.CatViewHolder>
             imageView = itemView.findViewById(R.id.cat_image);
             catName = itemView.findViewById(R.id.cat_name);
             catOrigin = itemView.findViewById(R.id.cat_origin);
-//            vcahospitals_url = itemView.findViewById(R.id.vcahospitals_url);
-//            vetstreet_url = itemView.findViewById(R.id.vetstreet_url);
-//            cfa_url = itemView.findViewById(R.id.cfa_url);
             description = itemView.findViewById(R.id.description);
             temperament = itemView.findViewById(R.id.temperament);
             alt_names = itemView.findViewById(R.id.alt_names);
