@@ -12,7 +12,7 @@ public class DatabaseClient {
 
     DatabaseClient(Context mCtx){
         this.mCtx = mCtx;
-        appDatabase = Room.databaseBuilder(mCtx,AppDatabase.class,"AllCatsInfo").build();
+        appDatabase = Room.databaseBuilder(mCtx,AppDatabase.class,"cat").build();
     }
     public static synchronized DatabaseClient getInstance(Context mCtx)
     {

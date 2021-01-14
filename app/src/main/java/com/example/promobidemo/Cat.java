@@ -10,18 +10,12 @@ import androidx.room.ColumnInfo;
 import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-import androidx.room.TypeConverters;
-
-import com.example.promobidemo.RoomDBFiles.DatabaseClient;
-
 import java.io.Serializable;
 
 
-import static io.realm.Realm.getApplicationContext;
-
-
+//This is the model class for room db
 @Entity
-public class Cat implements Serializable {
+public class Cat  {
 
     @PrimaryKey
     @ColumnInfo(name="name")
@@ -33,9 +27,6 @@ public class Cat implements Serializable {
 
     @ColumnInfo(name="origin")
     private String origin;
-
-    private String country_codes;
-    private String country_code;
 
     @ColumnInfo(name="description")
     private String description;
@@ -89,7 +80,7 @@ public class Cat implements Serializable {
     private String wikipedia_url;
 
     @Embedded
-   private Image image;
+    private Image image;
 
 
     public Cat(){}
@@ -98,8 +89,6 @@ public class Cat implements Serializable {
         this.name = name;
         this.temperament = temperament;
         this.origin = origin;
-        this.country_codes = country_codes;
-        this.country_code = country_code;
         this.description = description;
         this.life_span = life_span;
         this.alt_names = alt_names;
@@ -142,22 +131,6 @@ public class Cat implements Serializable {
 
     public void setOrigin(String origin) {
         this.origin = origin;
-    }
-
-    public String getCountry_codes() {
-        return country_codes;
-    }
-
-    public void setCountry_codes(String country_codes) {
-        this.country_codes = country_codes;
-    }
-
-    public String getCountry_code() {
-        return country_code;
-    }
-
-    public void setCountry_code(String country_code) {
-        this.country_code = country_code;
     }
 
     public String getDescription() {

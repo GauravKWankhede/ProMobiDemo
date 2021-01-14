@@ -7,9 +7,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -21,14 +21,9 @@ import android.widget.Toast;
 
 import com.example.promobidemo.Adapters.CatsAdapter;
 import com.example.promobidemo.Adapters.ViewPagerAdapter;
-import com.example.promobidemo.RoomDBFiles.AppDatabase;
-import com.example.promobidemo.RoomDBFiles.Converter;
 import com.example.promobidemo.RoomDBFiles.DatabaseClient;
-import com.example.promobidemo.RoomDBFiles.TaskDao;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.URL;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -42,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     ViewPager viewPager;
     ViewPagerAdapter viewPagerAdapter;
-
+    List<Cat> res;
     @Inject
     Retrofit retrofit;
     @Override
@@ -55,10 +50,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         LinearLayoutManager manager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(manager);
-
-
         loadCats();
-
     }
 
     private void loadCats() {
@@ -79,32 +71,85 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<List<Cat>> call, Response<List<Cat>> response) {
                     progressDialog.dismiss();
+
+                    res =  response.body();
                     viewPagerAdapter = new ViewPagerAdapter(MainActivity.this, response.body());
                     viewPager.setAdapter(viewPagerAdapter);
-                    recyclerView.setAdapter(new CatsAdapter(MainActivity.this, response.body()));
+                    recyclerView.setAdapter(new CatsAdapter(MainActivity.this,  response.body()));
 
-                    addData(response.body());
-                }
+                    class AddDataToRoomDatabase extends AsyncTask<Void, Void, Void> {
+
+                        @Override
+                        protected Void doInBackground(Void... voids) {
+                            assert res != null;
+                            Log.d("getCheckDAta", "response - " + res.toString());
+                            for (int i = 0; i < res.size(); i++) {
+                                //   cat.setName(res.get(i).getName());
+                                  // Log.e("TAG", "onResponse: " + res.get(i).getImage()+" : "+ res.get(i).getImage().getUrl());
+                               Cat allCatInfo = new Cat();
+                                allCatInfo.setName(res.get(i).getName());
+                                allCatInfo.setOrigin(res.get(i).getOrigin());
+                                allCatInfo.setDescription(res.get(i).getDescription());
+                                allCatInfo.setTemperament(res.get(i).getTemperament());
+                                allCatInfo.setAlt_names(res.get(i).getAlt_names());
+                                allCatInfo.setLife_span(res.get(i).getLife_span());
+                                allCatInfo.setAdaptability(res.get(i).getAdaptability());
+                                allCatInfo.setAffection_level(res.get(i).getAffection_level());
+                                allCatInfo.setChild_friendly(res.get(i).getChild_friendly());
+                                allCatInfo.setDog_friendly(res.get(i).getDog_friendly());
+                                allCatInfo.setEnergy_level(res.get(i).getEnergy_level());
+                                allCatInfo.setGrooming(res.get(i).getGrooming());
+                                allCatInfo.setHealth_issues(res.get(i).getHealth_issues());
+                                allCatInfo.setIntelligence(res.get(i).getIntelligence());
+                                allCatInfo.setShedding_level(res.get(i).getShedding_level());
+                                allCatInfo.setSocial_needs(res.get(i).getSocial_needs());
+                                allCatInfo.setStranger_friendly(res.get(i).getStranger_friendly());
+                                allCatInfo.setVocalisation(res.get(i).getVocalisation());
+                                allCatInfo.setExperimental(res.get(i).getExperimental());
+
+                                if(res.get(i).getImage()== null || res.get(i).getImage().getUrl()==null){
+                                    allCatInfo.setImage(null);
+                                }
+                                else
+                                {
+                                    allCatInfo.setImage(res.get(i).getImage());
+                                }
 
 
+
+                                DatabaseClient.getInstance(getApplicationContext()).getAppDatabase()
+                                        .taskDao()
+                                        .insert(allCatInfo);
+                            }
+                            return null;
+                        }
+
+                        @Override
+                        protected void onPostExecute(Void aVoid) {
+                            super.onPostExecute(aVoid);
+
+                            Log.e("TAG", "saved ");
+                        }
+
+                    }
+
+                    new AddDataToRoomDatabase().execute();
+                    }
                 @Override
                 public void onFailure(Call<List<Cat>> call, Throwable t) {
                     Log.e("ERROR", "onFailure: "+ t.getMessage() );
-
                 }
-
             });
-
-
         }
-        else if (checkRoomDababaseIsPresent(MainActivity.this,"AllCatsInfo")){
+        else if (checkRoomDababaseIsPresent(MainActivity.this,"cat")){
             //set data from room database to viewpager and recyclerview
             progressDialog.dismiss();
+            @SuppressLint("StaticFieldLeak")
             class GetAllDataFromRoom extends AsyncTask<Void,Void,List<Cat>>{
 
                 @Override
                 protected List<Cat> doInBackground(Void... voids) {
-                    List<Cat> catList =DatabaseClient.getInstance(getApplicationContext())
+                    List<Cat> catList = DatabaseClient.getInstance(getApplicationContext())
                             .getAppDatabase()
                             .taskDao()
                             .getAll();
@@ -115,6 +160,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 protected void onPostExecute(List<Cat> catList) {
                     super.onPostExecute(catList);
+                    Log.e("Catlist", "onPostExecute: "+catList );
                     viewPagerAdapter = new ViewPagerAdapter(MainActivity.this,catList);
                     viewPager.setAdapter(viewPagerAdapter);
                     recyclerView.setAdapter(new CatsAdapter(MainActivity.this,catList));
@@ -132,51 +178,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void addData(List<Cat> body) {
-        class AddDataToRoomDatabase extends AsyncTask<Void, Void, Void> {
 
-            @Override
-            protected Void doInBackground(Void... voids) {
-                Cat cat = new Cat();
-                cat.setName(cat.getName());
-                cat.setOrigin(cat.getOrigin());
-                cat.setDescription(cat.getDescription());
-                cat.setTemperament(cat.getTemperament());
-                cat.setAlt_names(cat.getAlt_names());
-                cat.setLife_span(cat.getLife_span());
-                cat.setAdaptability(cat.getAdaptability());
-                cat.setAffection_level(cat.getAffection_level());
-                cat.setChild_friendly(cat.getChild_friendly());
-                cat.setDog_friendly(cat.getDog_friendly());
-                cat.setEnergy_level(cat.getEnergy_level());
-                cat.setGrooming(cat.getGrooming());
-                cat.setHealth_issues(cat.getHealth_issues());
-                cat.setIntelligence(cat.getIntelligence());
-                cat.setShedding_level(cat.getShedding_level());
-                cat.setSocial_needs(cat.getSocial_needs());
-                cat.setStranger_friendly(cat.getStranger_friendly());
-                cat.setVocalisation(cat.getVocalisation());
-                cat.setExperimental(cat.getExperimental());
-                cat.setImage(cat.getImage());
-
-                DatabaseClient.getInstance(getApplicationContext()).getAppDatabase()
-                        .taskDao()
-                        .insert(cat);
-
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
-
-                Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_SHORT).show();
-            }
-
-        }
-        AddDataToRoomDatabase addDataToRoomDatabase = new AddDataToRoomDatabase();
-        addDataToRoomDatabase.execute();
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -214,7 +216,52 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+   /* class AddDataToRoomDatabase extends AsyncTask<Void, Void, Void> {
 
+        @Override
+        protected Void doInBackground(Void... voids) {
+            assert res != null;
+            Log.d("getCheckDAta","response - "+res.toString());
+            for (int i = 0; i< res.size(); i++) {
+                //   cat.setName(res.get(i).getName());
+                //   Log.e("TAG", "onResponse: " + res.get(i).getName());
+                Cat cat = new Cat();
+                cat.setName(res.get(i).getName());
+                cat.setOrigin(res.get(i).getOrigin());
+                cat.setDescription(res.get(i).getDescription());
+                cat.setTemperament(res.get(i).getTemperament());
+                cat.setAlt_names(res.get(i).getAlt_names());
+                cat.setLife_span(res.get(i).getLife_span());
+                cat.setAdaptability(res.get(i).getAdaptability());
+                cat.setAffection_level(res.get(i).getAffection_level());
+                cat.setChild_friendly(res.get(i).getChild_friendly());
+                cat.setDog_friendly(res.get(i).getDog_friendly());
+                cat.setEnergy_level(res.get(i).getEnergy_level());
+                cat.setGrooming(res.get(i).getGrooming());
+                cat.setHealth_issues(res.get(i).getHealth_issues());
+                cat.setIntelligence(res.get(i).getIntelligence());
+                cat.setShedding_level(res.get(i).getShedding_level());
+                cat.setSocial_needs(res.get(i).getSocial_needs());
+                cat.setStranger_friendly(res.get(i).getStranger_friendly());
+                cat.setVocalisation(res.get(i).getVocalisation());
+                cat.setExperimental(res.get(i).getExperimental());
+                cat.setImage(res.get(i).getImage());
+
+                DatabaseClient.getInstance(getApplicationContext()).getAppDatabase()
+                        .taskDao()
+                        .insert(res);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            Log.e("TAG", "saved " );
+        }
+
+    }*/
 
     private boolean isNetworkConnected(){
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -223,9 +270,10 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean checkRoomDababaseIsPresent(Context context, String dbName){
         File dbFile = context.getDatabasePath(dbName);
-        Log.e("FIle Name", dbFile +"");
+        Log.e("FIle Name", dbFile.length() +"");
         return dbFile.exists();
     }
+
 
 }
 

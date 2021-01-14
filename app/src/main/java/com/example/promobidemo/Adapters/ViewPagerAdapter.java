@@ -26,7 +26,9 @@ public class ViewPagerAdapter extends PagerAdapter {
         this.mCtx = context;
         this.catList = catList;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
     }
+
     @Override
     public int getCount() {
         return catList.size();
@@ -106,6 +108,8 @@ public class ViewPagerAdapter extends PagerAdapter {
 
         Objects.requireNonNull(container).addView(view);
         return view;
+
+
     }
 
     @Override

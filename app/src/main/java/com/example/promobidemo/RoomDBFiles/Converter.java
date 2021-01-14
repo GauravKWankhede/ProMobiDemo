@@ -10,7 +10,6 @@ import java.util.ArrayList;
 
 public class Converter {
 
-    private static Gson gson = new Gson();
     @TypeConverter
     public static ArrayList<String> fromString(String value){
         Type listType = new TypeToken<ArrayList<String>>(){}.getType();
