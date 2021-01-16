@@ -13,7 +13,6 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -82,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         protected Void doInBackground(Void... voids) {
                             assert res != null;
-                            Log.d("getCheckDAta", "response - " + res.toString());
+                          //  Log.d("getCheckDAta", "response - " + res.toString());
                             for (int i = 0; i < res.size(); i++) {
                                 //   cat.setName(res.get(i).getName());
                                   // Log.e("TAG", "onResponse: " + res.get(i).getImage()+" : "+ res.get(i).getImage().getUrl());
@@ -128,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
                         protected void onPostExecute(Void aVoid) {
                             super.onPostExecute(aVoid);
 
-                            Log.e("TAG", "saved ");
+                           // Log.e("TAG", "saved ");
                         }
 
                     }
@@ -137,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 @Override
                 public void onFailure(Call<List<Cat>> call, Throwable t) {
-                    Log.e("ERROR", "onFailure: "+ t.getMessage() );
+                 //   Log.e("ERROR", "onFailure: "+ t.getMessage() );
                 }
             });
         }
@@ -160,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 protected void onPostExecute(List<Cat> catList) {
                     super.onPostExecute(catList);
-                    Log.e("Catlist", "onPostExecute: "+catList );
+                   // Log.e("Catlist", "onPostExecute: "+catList );
                     viewPagerAdapter = new ViewPagerAdapter(MainActivity.this,catList);
                     viewPager.setAdapter(viewPagerAdapter);
                     recyclerView.setAdapter(new CatsAdapter(MainActivity.this,catList));
@@ -216,52 +215,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-   /* class AddDataToRoomDatabase extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            assert res != null;
-            Log.d("getCheckDAta","response - "+res.toString());
-            for (int i = 0; i< res.size(); i++) {
-                //   cat.setName(res.get(i).getName());
-                //   Log.e("TAG", "onResponse: " + res.get(i).getName());
-                Cat cat = new Cat();
-                cat.setName(res.get(i).getName());
-                cat.setOrigin(res.get(i).getOrigin());
-                cat.setDescription(res.get(i).getDescription());
-                cat.setTemperament(res.get(i).getTemperament());
-                cat.setAlt_names(res.get(i).getAlt_names());
-                cat.setLife_span(res.get(i).getLife_span());
-                cat.setAdaptability(res.get(i).getAdaptability());
-                cat.setAffection_level(res.get(i).getAffection_level());
-                cat.setChild_friendly(res.get(i).getChild_friendly());
-                cat.setDog_friendly(res.get(i).getDog_friendly());
-                cat.setEnergy_level(res.get(i).getEnergy_level());
-                cat.setGrooming(res.get(i).getGrooming());
-                cat.setHealth_issues(res.get(i).getHealth_issues());
-                cat.setIntelligence(res.get(i).getIntelligence());
-                cat.setShedding_level(res.get(i).getShedding_level());
-                cat.setSocial_needs(res.get(i).getSocial_needs());
-                cat.setStranger_friendly(res.get(i).getStranger_friendly());
-                cat.setVocalisation(res.get(i).getVocalisation());
-                cat.setExperimental(res.get(i).getExperimental());
-                cat.setImage(res.get(i).getImage());
-
-                DatabaseClient.getInstance(getApplicationContext()).getAppDatabase()
-                        .taskDao()
-                        .insert(res);
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-
-            Log.e("TAG", "saved " );
-        }
-
-    }*/
 
     private boolean isNetworkConnected(){
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -270,7 +223,7 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean checkRoomDababaseIsPresent(Context context, String dbName){
         File dbFile = context.getDatabasePath(dbName);
-        Log.e("FIle Name", dbFile.length() +"");
+       // Log.e("FIle Name", dbFile.length() +"");
         return dbFile.exists();
     }
 
