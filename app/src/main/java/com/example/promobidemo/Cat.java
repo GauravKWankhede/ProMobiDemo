@@ -17,9 +17,10 @@ import java.io.Serializable;
 @Entity
 public class Cat  {
 
-    @PrimaryKey
+    @PrimaryKey (autoGenerate = true)
+    private int identity;
+
     @ColumnInfo(name="name")
-    @NonNull
     private String name;
 
     @ColumnInfo(name="temperament")
@@ -107,6 +108,14 @@ public class Cat  {
         this.experimental = experimental;
         this.wikipedia_url = wikipedia_url;
         this.image = image;
+    }
+
+    public int getIdentity() {
+        return identity;
+    }
+
+    public void setIdentity(int id) {
+        this.identity = id;
     }
 
     public String getName() {

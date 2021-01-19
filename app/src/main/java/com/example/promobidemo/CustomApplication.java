@@ -15,7 +15,7 @@ public class CustomApplication extends Application {
         super.onCreate();
 
         catsComponent = DaggerCatsComponent.builder()
-                .networksModule(new NetworksModule(Helper.URL))
+                .networksModule(new NetworksModule(Api.BASE_URL))
                 .build();
 
     }

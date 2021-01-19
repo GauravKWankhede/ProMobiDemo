@@ -13,6 +13,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -81,12 +82,11 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         protected Void doInBackground(Void... voids) {
                             assert res != null;
-                          //  Log.d("getCheckDAta", "response - " + res.toString());
+                            Log.d("getCheckDAta", "response - " + res.toString());
                             for (int i = 0; i < res.size(); i++) {
-                                //   cat.setName(res.get(i).getName());
-                                  // Log.e("TAG", "onResponse: " + res.get(i).getImage()+" : "+ res.get(i).getImage().getUrl());
                                Cat allCatInfo = new Cat();
                                 allCatInfo.setName(res.get(i).getName());
+                                allCatInfo.setIdentity(res.get(i).getIdentity());
                                 allCatInfo.setOrigin(res.get(i).getOrigin());
                                 allCatInfo.setDescription(res.get(i).getDescription());
                                 allCatInfo.setTemperament(res.get(i).getTemperament());
@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
                         protected void onPostExecute(Void aVoid) {
                             super.onPostExecute(aVoid);
 
-                           // Log.e("TAG", "saved ");
+                            Log.e("TAG", "saved ");
                         }
 
                     }
@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 @Override
                 public void onFailure(Call<List<Cat>> call, Throwable t) {
-                 //   Log.e("ERROR", "onFailure: "+ t.getMessage() );
+                    Log.e("ERROR", "onFailure: "+ t.getMessage() );
                 }
             });
         }
